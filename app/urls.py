@@ -1,14 +1,11 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 
-from .views import HomeView
+from .views import CreateListView, UpdateDeleteView, RegisterUser, LoginView
 
 urlpatterns = [
-    # path('/login', views.login, name='login'),
-    # path('/register', views.register, name='register'),
-    path('', HomeView.as_view(), name='home'),
-    path('<int:todo_id>/', HomeView.as_view(), name='home'),
-    # path('', HomeView.as_view(), name='add'),
-    # path('complete/<todo_id>', HomeView.as_view(), name='complete'),
-    # path('deletecomplete/', HomeView.as_view(), name='deletecomplete'),
-    # path('deleteall/', HomeView.as_view(), name='deleteall'),
+    path('signup/', RegisterUser.as_view(), name='signup'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('', CreateListView.as_view(), name='create-list-view'),
+    path('<int:todo_id>/', UpdateDeleteView.as_view(), name='update-delete-view')
 ]
