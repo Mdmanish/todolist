@@ -25,7 +25,7 @@ SECRET_KEY = 'r#ctv^6lde!11dhi7ed=)an#h1k9y4j%u*j&b!8z#f$luwssn$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'todolist-p857.onrender.com']
 
 
 # Application definition
