@@ -41,6 +41,8 @@ class LoginView(APIView):
 
 
 class CreateListView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         print(request.user)
         user = User.objects.get(username=request.user)
@@ -57,6 +59,8 @@ class CreateListView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UpdateDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request, todo_id):
         try:
             user = User.objects.get(username=request.user)
