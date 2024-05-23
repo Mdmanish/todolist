@@ -90,6 +90,12 @@ class UpdateDeleteView(APIView):
 
 class AddStepView(APIView):
     permission_classes = [IsAuthenticated]
+
+    def get(self, request, todo_id):
+        todo_obj = get_object_or_404(Todo, id=todo_id)
+        steps = AddStep.objects.filter(todo=todo_obj)
+        serializer = AddStepSerializer(steps, many=True)
+        return Response(serializer.data)
     
     def post(self, request, todo_id):
         todo_obj = get_object_or_404(Todo, id=todo_id)
@@ -101,6 +107,11 @@ class AddStepView(APIView):
 
 class AddStepDetailedView(APIView):
     permission_classes = [IsAuthenticated]
+
+    def get(self, request, step_id):
+        add_step_obj = get_object_or_404(AddStep, id=step_id)
+        serializer = AddStepSerializer(add_step_obj)
+        return Response(serializer.data)
 
     def put(self, request, step_id):
         add_step_obj = AddStep.objects.get(id=step_id)
@@ -120,6 +131,12 @@ class AddStepDetailedView(APIView):
 class CategoryView(APIView):
     permission_classes = [IsAuthenticated]
 
+    def get(self, request, todo_id):
+        todo_obj = get_object_or_404(Todo, id=todo_id)
+        categories = Category.objects.filter(todo=todo_obj)
+        serialize = CategorySerializer(categories, many=True)
+        return Response(serialize.data)
+
     def post(self, request, todo_id):
         todo_obj = get_object_or_404(Todo, id=todo_id)
         serializer = CategorySerializer(data=request.data)
@@ -131,6 +148,11 @@ class CategoryView(APIView):
 class CategoryDetailedView(APIView):
     permission_classes = [IsAuthenticated]
 
+    def get(self, request, category_id):
+        category_obj = get_object_or_404(Category, id=category_id)
+        serializer = CategorySerializer(category_obj)
+        return Response(serializer.data)
+
     def delete(self, request, category_id):
         category_obj = Category.objects.get(id=category_id)
         if category_obj:
@@ -141,6 +163,12 @@ class CategoryDetailedView(APIView):
 
 class FileView(APIView):
     permission_classes = [IsAuthenticated]
+
+    def get(self, request, todo_id):
+        todo_obj = get_object_or_404(Todo, id=todo_id)
+        files = File.objects.filter(todo=todo_obj)
+        serializer = FileSerializer(files, many=True)
+        return Response(serializer.data)
     
     def post(self, request, todo_id):
         todo_obj = get_object_or_404(Todo, id=todo_id)
