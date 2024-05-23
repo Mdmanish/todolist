@@ -6,6 +6,7 @@ from .serializers import UserSerializer, TodoSerializer, LoginSerializer, AddSte
 from django.contrib.auth import authenticate, login
 from .models import Todo, AddStep, Category, File
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 class RegisterUser(APIView):
     def post(self, request):
@@ -45,6 +46,7 @@ class CreateListView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        print('inside post')
         serializer = TodoSerializer(data=request.data)
         user = User.objects.get(username=request.user)
         if serializer.is_valid():
@@ -90,9 +92,10 @@ class AddStepView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request, todo_id):
+        todo_obj = get_object_or_404(Todo, id=todo_id)
         serializer = AddStepSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(todo=todo_obj)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -118,9 +121,10 @@ class CategoryView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, todo_id):
+        todo_obj = get_object_or_404(Todo, id=todo_id)
         serializer = CategorySerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(todo=todo_obj)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -139,9 +143,10 @@ class FileView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request, todo_id):
+        todo_obj = get_object_or_404(Todo, id=todo_id)
         serializer = FileSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(todo=todo_obj)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     

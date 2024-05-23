@@ -15,8 +15,7 @@ class LoginSerializer(serializers.Serializer):
 class TodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todo
-        fields = ['id', 'title', 'description', 'completed']
-        extra_kwargs = {'description': {'required': False}, 'title': {'required': False}}
+        exclude = ['user']
 
 class AddStepSerializer(serializers.ModelSerializer):
     class Meta:
