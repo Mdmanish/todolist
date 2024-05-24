@@ -7,6 +7,9 @@ from django.contrib.auth import authenticate, login
 from .models import Todo, AddStep, Category, File
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import get_user_model
+
 
 class RegisterUser(APIView):
     def post(self, request):
@@ -28,12 +31,12 @@ class LoginView(APIView):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return Response({'message': 'Login successful'})
+                refresh = RefreshToken.for_user(user)
+                return Response({'access': str(refresh.access_token), 'refresh': str(refresh)})
             else:
                 return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class CreateListView(APIView):
     permission_classes = [IsAuthenticated]
